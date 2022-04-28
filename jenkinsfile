@@ -4,6 +4,7 @@ pipeline {
        IMAGE_TAG = "latest"
        ID_DOCKER = "gengiskahn"
        PASSWORD_DOCKER = credentials('password_docker')
+       DOCKER_CREDENTIALS = credentials('docker_credentials')
        STAGING = "${ID_DOCKER}-staging"
        PRODUCTION = "${ID_DOCKER}-production"
      }
@@ -13,7 +14,7 @@ pipeline {
              agent any
              steps {
                 script {
-                  sh 'docker build -t ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG .'
+                  sh 'docker build -t ${DOCKER_CREDENTIALS_USR}/$IMAGE_NAME:$IMAGE_TAG .'
                 }
              }
         }
@@ -22,7 +23,7 @@ pipeline {
             steps {
                script {
                  sh '''
-                    docker run --name $IMAGE_NAME -d -p 80:5000 -e PORT=5000 ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG
+                    docker run --name $IMAGE_NAME -d -p 80:5000 -e PORT=5000 ${DOCKER_CREDENTIALS_USR}/$IMAGE_NAME:$IMAGE_TAG
                     sleep 5
                  '''
                }
@@ -54,8 +55,8 @@ pipeline {
          steps {
             script {
               sh '''
-                  echo ${PASSWORD_DOCKER} | docker login -u ${ID_DOCKER} --password-stdin
-                  docker push ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG
+                  echo ${DOCKER_CREDENTIALS_PSW} | docker login -u ${DOCKER_CREDENTIALS_USR} --password-stdin
+                  docker push ${DOCKER_CREDENTIALS_USR}/$IMAGE_NAME:$IMAGE_TAG
               '''
             }
          }
