@@ -3,7 +3,7 @@ pipeline {
        IMAGE_NAME = "alpinehelloworld"
        IMAGE_TAG = "latest"
        ID_DOCKER = "gengiskahn"
-       PASSWORD_DOCKER = "stephoune"
+       PASSWORD_DOCKER = credentials('password_docker')
        STAGING = "${ID_DOCKER}-staging"
        PRODUCTION = "${ID_DOCKER}-production"
      }
