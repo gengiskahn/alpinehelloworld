@@ -3,6 +3,7 @@ pipeline {
        IMAGE_NAME = "alpinehelloworld"
        IMAGE_TAG = "latest"
        ID_DOCKER = "gengiskahn"
+       PASSWORD_DOCKER = "stephoune"
        STAGING = "${ID_DOCKER}-staging"
        PRODUCTION = "${ID_DOCKER}-production"
      }
@@ -53,8 +54,8 @@ pipeline {
          steps {
             script {
               sh '''
-                  echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_ID --password-stdin
-                  docker push ${DOCKERHUB_ID}/$IMAGE_NAME:$IMAGE_TAG
+                  echo ${PASSWORD_DOCKER} | docker login -u ${ID_DOCKER} --password-stdin
+                  docker push ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG
               '''
             }
          }
